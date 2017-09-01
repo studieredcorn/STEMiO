@@ -5,6 +5,9 @@ public/*
 # macOS stuff
 .DS_Store
 
+# vi swap files
+*.swp
+
 # Logs
 *.log
 npm-debug.log*
