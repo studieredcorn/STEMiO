@@ -1,0 +1,23 @@
+{
+  "name": "react-client",
+  "version": "0.1.0",
+  "private": false,
+  "homepage": "http://stemio.org",
+  "dependencies": {
+    "mongodb": "^2.2.20",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "d3": "~4.9.1",
+    "react-popup": "~0.8.0",
+    "react-draggable": "~2.0.0"
+  },
+  "devDependencies": {
+    "react-scripts": "1.0.7"
+  },
+  "scripts": {
+    "start": "PORT=3001 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

@@ -1,0 +1,165 @@
+.mm-popup {
+  position:fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  overflow: auto;
+  display: none;
+  background: rgba(0,0,0,.1);
+}
+
+.mm-popup--visible {
+  display: block;
+}
+
+.mm-popup__close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+
+  outline: none;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  text-indent: -9999px;
+  background-size: 100%;
+  margin: 0;
+}
+
+.mm-popup__input {
+  display: block;
+  width: 100%;
+  height: 30px;
+  border-radius: 3px;
+  background: #f5f5f5;
+  border: 1px solid black;
+  outline: none;
+  box-sizing: border-box !important;
+  font-size: 14px;
+  padding: 0 12px;
+  color: black;
+}
+
+.mm-popup__box {
+  width: 350px;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  margin-left: -175px;
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid black;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.mm-popup__box__header {
+  padding: 15px 20px;
+  background: #f0f0ff;
+  color: black;
+}
+
+.mm-popup__box__header__title {
+  margin: 0;
+  font-size: 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.mm-popup__box__body {
+  padding: 20px;
+  line-height: 1.4;
+  font-size: 14px;
+  color: black;
+  position: relative;
+  z-index: 2;
+}
+
+.mm-popup__box__body p {
+  margin: 0 0 5px;
+}
+
+.mm-popup__box__footer {
+  overflow: hidden;
+  padding: 40px 20px 20px;
+}
+
+.mm-popup__box__footer__right-space {
+  float: right;
+}
+
+.mm-popup__box__footer__right-space .mm-popup__btn {
+  margin-left: 5px;
+}
+
+.mm-popup__box__footer__left-space {
+  float: left;
+}
+
+.mm-popup__box__footer__left-space .mm-popup__btn {
+  margin-right: 5px;
+}
+
+.mm-popup__box--popover {
+  width: 300px;
+  margin-left: -150px;
+}
+
+.mm-popup__box--popover .mm-popup__close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  outline: none;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  text-indent: -9999px;
+  background-size: 100%;
+  margin: 0;
+  z-index: 3;
+}
+
+.mm-popup__box--popover .mm-popup__box__body {
+  padding: 20px;
+}
+
+.mm-popup__btn {
+  border-radius: 3px;
+  box-sizing: border-box;
+  padding: 0 10px;
+  margin: 0;
+  line-height: 32px;
+  height: 32px;
+  border: 1px solid black;
+  text-align: center;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 400;
+  color: black;
+  background: transparent;
+  outline: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mm-popup__btn--success {
+  background-color: #73bf43;
+  border-color: black;
+  color: #ffffff;
+}
+
+.mm-popup__btn--danger {
+  background-color: #feac2f;
+  border-color: black;
+  color: #ffffff;
+}

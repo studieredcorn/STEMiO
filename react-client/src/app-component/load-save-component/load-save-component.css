@@ -1,0 +1,135 @@
+.load-save-component {
+  position: absolute;
+  z-index: 1;
+  right: 20px;
+  top: calc(2em + 76px);
+  width: 25%;
+  height: auto;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: #d9d9d9;
+}
+
+.load-save-component__get-existing-collections-button {
+  position: relative;
+  top: 6px;
+  left: 3px;
+  width: calc(100% - 6px);
+  padding: 0px 0px 0px 0px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.load-save-component__existing-collections-select {
+  position: relative;
+  top: 10px;
+  left: 10%;
+  width: 80%;
+  max-height: calc(6em + 7px);
+  background: #f5f5f5;
+  border: solid 1px black;
+  border-radius: 3px;
+}
+
+.load-save-component__choose-system-label {
+  position: relative;
+  display: inline-block;
+  top: 1em;
+  left: 10%;
+  width: 80%;
+  height: calc(2em + 12px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.load-save-component__input-area__input {
+  position: relative;
+  display: inline-block;
+  width: calc(100% - 6px);
+  padding: 2px 2px 2px 2px;
+  background: #f5f5f5;
+  border: solid 1px black;
+  border-radius: 3px;
+}
+
+.load-save-component__get-system-button {
+  position: relative;
+  top: calc(1em + 2px);
+  left: 3px;
+  width: 50%;
+  padding: 0px 0px 0px 0px;
+  background: white;
+  border: 1px solid black;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.load-save-component__save-system-button {
+  position: relative;
+  top: calc(1em + 2px);
+  left: 0px;
+  width: calc(50% - 3px);
+  padding: 0px 0px 0px 0px;
+  background: white;
+  border: 1px solid black;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.load-save-component__create-system-button {
+  position: relative;
+  top: calc(1em + 6px);
+  left: calc(16% + 3px);
+  width: calc(67% - 3px);
+  padding: 0px 0px 0px 0px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.load-save-component__success-message {
+  position: relative;
+  display: inline-block;
+  top: calc(1em + 3px);
+  left: 3px;
+  width: calc(100% - 6px);
+  user-select: none;
+  color: #73bf43;
+}
+
+.load-save-component__error-message {
+  position: relative;
+  display: inline-block;
+  top: calc(1em + 3px);
+  left: 3px;
+  width: calc(100% - 6px);
+  user-select: none;
+  color: #7777ff;
+}
+
+.load-save-component__spacer {
+  position: relative;
+  display: inline-block;
+  top: calc(1em + 3px);
+  left: 3px;
+  width: calc(100% - 6px);
+}
