@@ -1,5 +1,6 @@
 # builds of the stemio React client
 react-client/build/*
+public/*
 
 # macOS stuff
 .DS_Store
