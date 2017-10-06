@@ -39,7 +39,7 @@ class MainPage extends React.Component {
     this.setDeleteView = this.setDeleteView.bind(this);
     this.setRenameView = this.setRenameView.bind(this);
 
-    this.dataService = new DataService("stemio.org",
+    this.dataService = new DataService("localhost:49152",
       this.setData,
       this.getData);
   }

@@ -37,7 +37,7 @@ export class SelectionInfo extends React.Component {
     var clickedObjects = this.props.getClickedObjects();
 
     clickedObjects[0].text = event.target.value;
-    if (clickedObjects[0].child !== null) {
+    if ((clickedObjects[0].child !== null) && (clickedObjects[0].child !== undefined)) {
       this.props.setRenameView({ viewId: clickedObjects[0].child,
         newText: event.target.value });
     }
