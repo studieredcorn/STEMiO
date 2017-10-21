@@ -1,10 +1,11 @@
 import React from 'react';
-
+import ReactDOM from 'react-dom'
 import './load-save-component.css'
 
 export class LoadSave extends React.Component {
   constructor(props) {
     super(props);
+
 
     this.state = { existingCollections: "",
 
@@ -80,21 +81,27 @@ export class LoadSave extends React.Component {
 
     var _this = this;
 
-    this.props.dataService.sendGetData(this.props.dataService.collectionName)
-      .then(function(results){
-          _this.props.setClickedObjects([]);
-          _this.props.dataService.setData(results);
-          _this.setState({ successText: "Retrieved " + results.length + " systems from collection '" + _this.props.dataService.collectionName + "'." });
-          _this.setState({ errorText: "" });
-          _this.setState({ recentCollection: _this.props.dataService.collectionName });
-          _this.props.setResetViewId();
-        },
-        function(error) {
-          _this.props.dataService.setData([]);
-          _this.setState({ successText: "" });
-          _this.setState({ errorText: error });
-          _this.setState({ recentCollection: "" });
-        });
+    ReactDOM.render(<this.props.popup
+      closeBtn={false}
+      closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
+      this.props.popup.plugins().noticeOkCancel("Are you sure?", "Retrieving a system will lose unsaved data.", "Continue without saving",
+      function () {
+        _this.props.dataService.sendGetData(_this.props.dataService.collectionName)
+          .then(function(results){
+              _this.props.setClickedObjects([]);
+              _this.props.dataService.setData(results);
+              _this.setState({ successText: "Retrieved " + results.length + " systems from collection '" + _this.props.dataService.collectionName + "'." });
+              _this.setState({ errorText: "" });
+              _this.setState({ recentCollection: _this.props.dataService.collectionName });
+              _this.props.setResetViewId();
+            },
+          function(error) {
+            _this.props.dataService.setData([]);
+            _this.setState({ successText: "" });
+            _this.setState({ errorText: error });
+            _this.setState({ recentCollection: "" });
+          })
+        } )
   }
 
   handleSendData() {
@@ -103,17 +110,39 @@ export class LoadSave extends React.Component {
     // stemio system data
 
     var _this = this;
+    //define function to send stemio system data
+    function sendData() {
+      _this.props.dataService.sendSendData(_this.props.dataService.collectionName, _this.props.dataService.getData(true))
+        .then(function(results) {
+            _this.setState({ successText: "Saved " + results.insertedCount + " systems to collection '" + _this.props.dataService.collectionName + "'." });
+            _this.setState({ errorText: "" });
+            _this.setState({ recentCollection: _this.props.dataService.collectionName });
+          }, function(error) {
+            _this.setState({ successText: "" });
+            _this.setState({ errorText: error });
+          });
+    }
+    //get existing data collection names
+    this.props.dataService.sendGetExistingCollections()
+      .then( function(existingCollections) {
+        //get name of this collection
+        var systemName = _this.state.collectionName;
+        //loop through existing collection names to see if matches this name
+        for (var i=0; i<existingCollections.length; i++) {
+          //if name already exists in system, render popup
+          if (existingCollections[i] === systemName) {
+            ReactDOM.render(<_this.props.popup
+              closeBtn={false}
+              closeOnOutsideClick={false} />, document.getElementById("popupContainer") ),
+              _this.props.popup.plugins().noticeOkCancel("Warning", "A system with this name already exists in the database. Saving the system will overwrite existing data.", "Save", function(){sendData()} )
+          }
+          else {sendData()}
+        }
 
-    this.props.dataService.sendSendData(this.props.dataService.collectionName, this.props.dataService.getData(true))
-      .then(function(results) {
-          _this.setState({ successText: "Saved " + results.insertedCount + " systems to collection '" + _this.props.dataService.collectionName + "'." });
-          _this.setState({ errorText: "" });
-          _this.setState({ recentCollection: _this.props.dataService.collectionName });
-        }, function(error) {
-          _this.setState({ successText: "" });
-          _this.setState({ errorText: error });
-        });
-    
+      },
+      function(error){
+
+      })
   }
 
   handleCreateData() {
@@ -121,13 +150,21 @@ export class LoadSave extends React.Component {
     // we call our Main Page component to set a flag to tell Toggly to
     // create a new default view
 
-    this.props.setClickedObjects([]);
-    this.props.dataService.setData([]);
-    this.props.setResetViewId();
-    this.props.setCreateData();
-    this.setState({ successText: "Created 1 new system." });
-    this.setState({ errorText: "" });
-    this.setState({ recentCollection: "" });
+    var _this=this;
+
+    ReactDOM.render(<this.props.popup
+      closeBtn={false}
+      closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
+      this.props.popup.plugins().noticeOkCancel("Are you sure?", "Creating a new system will lose unsaved data.", "Continue without saving",
+      function () {
+        _this.props.setClickedObjects([]);
+        _this.props.dataService.setData([]);
+        _this.props.setResetViewId();
+        _this.props.setCreateData();
+        _this.setState({ successText: "Created 1 new system." });
+        _this.setState({ errorText: "" });
+        _this.setState({ recentCollection: "" });
+      } );
   }
 
   render() {
