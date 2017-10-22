@@ -185,6 +185,9 @@
   cursor: pointer;
 }
 
+.selection-info-component__selection-actions__create-subview-button_disabled {
+}
+
 .selection-info-component__selection-actions__subview-text {
   position: relative;
   display: inline-block;
@@ -213,6 +216,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
+}
+
+.selection-info-component__selection-actions__delete-subview-button_disabled {
 }
 
 .selection-info-component__selection-actions__change-blob-type-button {
@@ -289,4 +295,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
+}
+
+.selection-info-component__selection-actions__relink-button_disabled {
 }

@@ -148,15 +148,18 @@ export class LoadSave extends React.Component {
           </div>
         </label>
         <button onClick={this.handleGetData}
-          className="load-save-component__get-system-button">
+          className={(this.props.getDisableDataActions()) ? ("load-save-component__get-system-button load-save-component__get-system-button_disabled") : ("load-save-component__get-system-button")}
+          disabled={this.props.getDisableDataActions()}>
           Get System
         </button>
         <button onClick={this.handleSendData}
-          className="load-save-component__save-system-button">
+          className={(this.props.getDisableDataActions()) ? ("load-save-component__save-system-button load-save-component__save-system-button_disabled") : ("load-save-component__save-system-button")}
+          disabled={this.props.getDisableDataActions()}>
           Save System
         </button>
         <button onClick={this.handleCreateData}
-          className="load-save-component__create-system-button">
+          className={(this.props.getDisableDataActions()) ? ("load-save-component__create-system-button load-save-component__create-system-button_disabled") : ("load-save-component__create-system-button")}
+          disabled={this.props.getDisableDataActions()}>
           Create System
         </button>
         <div className="load-save-component__success-message">

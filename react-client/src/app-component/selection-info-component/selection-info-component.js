@@ -233,7 +233,8 @@ export class SelectionInfo extends React.Component {
           <div className="selection-info-component__selection-actions__subview-text">
             This {blobType} has a subsystem.
           </div>
-          <button className="selection-info-component__selection-actions__delete-subview-button selection-info-component__cancel-draggable"
+          <button className={(this.props.getDisableDataActions()) ? ("selection-info-component__selection-actions__delete-subview-button selection-info-component__selection-actions__delete-subview-button_disabled selection-info-component__cancel-draggable") : ("selection-info-component__selection-actions__delete-subview-button selection-info-component__cancel-draggable")}
+            disabled={this.props.getDisableDataActions()}
             onClick={this.handleDeleteView}>
             Delete Subsystem
           </button>
@@ -244,7 +245,8 @@ export class SelectionInfo extends React.Component {
         </div>
     } else {
       this.selectionActions = <div className="selection-info-component__selection-actions">
-          <button className="selection-info-component__selection-actions__create-subview-button selection-info-component__cancel-draggable"
+          <button className={(this.props.getDisableDataActions()) ? ("selection-info-component__selection-actions__create-subview-button selection-info-component__selection-actions__create-subview-button_disabled selection-info-component__cancel-draggable") : ("selection-info-component__selection-actions__create-subview-button selection-info-component__cancel-draggable")}
+            disabled={this.props.getDisableDataActions()}
             onClick={this.handleNewView}>
             Create Subsystem
           </button>
@@ -264,7 +266,8 @@ export class SelectionInfo extends React.Component {
         <div className="selection-info-component__selection-actions__target-text">
           Target: {link.target.text}
         </div>
-        <button className="selection-info-component__selection-actions__relink-button selection-info-component__cancel-draggable"
+        <button className={(this.props.getDisableDataActions()) ? ("selection-info-component__selection-actions__relink-button selection-info-component__selection-actions__relink-button_disabled selection-info-component__cancel-draggable") : ("selection-info-component__selection-actions__relink-button selection-info-component__cancel-draggable")}
+          disabled={this.props.getDisableDataActions()}
           onClick={this.handleRelink}>
           Relink
         </button>

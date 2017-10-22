@@ -6,6 +6,7 @@ import { ConnectString } from './connect-string-component/connect-string-compone
 import { LoadSave } from './load-save-component/load-save-component';
 import { SelectionInfo } from './selection-info-component/selection-info-component';
 import { Toggly } from './toggly-component/toggly-component';
+import { Search } from './search-component/search-component';
 
 import Popup from './popup-component/popup-component';
 
@@ -23,7 +24,8 @@ class MainPage extends React.Component {
       relink: false,
       newView: false,
       deleteView: false,
-      renameView: false };
+      renameView: false,
+      disableDataActions: false };
 
     this.selectionInfoComponent = "";
 
@@ -39,7 +41,10 @@ class MainPage extends React.Component {
     this.setDeleteView = this.setDeleteView.bind(this);
     this.setRenameView = this.setRenameView.bind(this);
 
-    this.dataService = new DataService("stemio.org",
+    this.setDisableDataActions = this.setDisableDataActions.bind(this);
+    this.getDisableDataActions = this.getDisableDataActions.bind(this);
+
+    this.dataService = new DataService("localhost:49152",
       this.setData,
       this.getData);
   }
@@ -57,6 +62,8 @@ class MainPage extends React.Component {
 
           getClickedObjects={this.getClickedObjects}
           setClickedObjects={this.setClickedObjects}
+
+          getDisableDataActions={this.getDisableDataActions}
         />
       </Draggable>;
   }
@@ -161,8 +168,12 @@ class MainPage extends React.Component {
     return this.state.clickedObjects;
   }
 
-  setResetViewId() {
-    this.setState({ resetViewId: true });
+  setResetViewId(viewId) {
+    if (viewId === undefined) {
+      this.setState({ resetViewId: true });
+    } else {
+      this.setState({ resetViewId: viewId });
+    }
   }
 
   setCreateData() {
@@ -202,6 +213,14 @@ class MainPage extends React.Component {
     this.setState({ renameView: newRenameView });
   }
 
+  setDisableDataActions(disableDataActions) {
+    this.setState({ disableDataActions: disableDataActions });
+  }
+
+  getDisableDataActions() {
+    return this.state.disableDataActions;
+  }
+
   render() {
     return (
       <div>
@@ -223,6 +242,9 @@ class MainPage extends React.Component {
           getClickedObjects={this.getClickedObjects}
           setClickedObjects={this.setClickedObjects}
 
+          getDisableDataActions={this.getDisableDataActions}
+          setDisableDataActions={this.setDisableDataActions}
+
           selectionInfoComponent={this.selectionInfoComponent}
         />
         <ConnectString
@@ -236,6 +258,17 @@ class MainPage extends React.Component {
 
           getClickedObjects={this.getClickedObjects}
           setClickedObjects={this.setClickedObjects}
+
+          getDisableDataActions={this.getDisableDataActions}
+        />
+        <Search
+          dataService={this.dataService}
+
+          setResetViewId={this.setResetViewId}
+
+          setClickedObjects={this.setClickedObjects}
+
+          getDisableDataActions={this.getDisableDataActions}
         />
       </div>
     );

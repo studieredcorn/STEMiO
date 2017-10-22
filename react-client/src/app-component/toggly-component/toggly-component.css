@@ -95,12 +95,24 @@
   border-radius: 5px;
 }
 
+.toggly-component__object-buttons__delete-button_disabled {
+  background: #efbf77;
+}
+
 .toggly-component__object-buttons__delete-button:hover {
   background-color: #feb443;
 }
 
+.toggly-component__object-buttons__delete-button_disabled:hover {
+  background-color: #efbf77;
+}
+
 .toggly-component__object-buttons__delete-button:active {
   background-color: #eb8e00;
+}
+
+.toggly-component__object-buttons__delete-button_disabled:active {
+  background: #efbf77;
 }
 
 .toggly-component__object-buttons__new-circle-blob-button {
@@ -117,12 +129,24 @@
   border-bottom-left-radius: 5px;
 }
 
+.toggly-component__object-buttons__new-circle-blob-button_disabled {
+  background: #98b786;
+}
+
 .toggly-component__object-buttons__new-circle-blob-button:hover {
   background-color: #7dc64e;
 }
 
+.toggly-component__object-buttons__new-circle-blob-button_disabled:hover {
+  background: #98b786;
+}
+
 .toggly-component__object-buttons__new-circle-blob-button:active {
   background-color: #67a83e;
+}
+
+.toggly-component__object-buttons__new-circle-blob-button_disabled:active {
+  background: #98b786;
 }
 
 .toggly-component__object-buttons__new-square-blob-button {
@@ -137,12 +161,24 @@
   border: 1px solid black;
 }
 
+.toggly-component__object-buttons__new-square-blob-button_disabled {
+  background: #98b786;
+}
+
 .toggly-component__object-buttons__new-square-blob-button:hover {
   background-color: #7dc64e;
 }
 
+.toggly-component__object-buttons__new-square-blob-button_disabled:hover {
+  background: #98b786;
+}
+
 .toggly-component__object-buttons__new-square-blob-button:active {
   background-color: #67a83e;
+}
+
+.toggly-component__object-buttons__new-square-blob-button_disabled:active {
+  background: #98b786;
 }
 
 .toggly-component__object-buttons__new-solid-link-button {
@@ -157,12 +193,24 @@
   border: 1px solid black;
 }
 
+.toggly-component__object-buttons__new-solid-link-button_disabled {
+  background: #98b786;
+}
+
 .toggly-component__object-buttons__new-solid-link-button:hover {
   background-color: #7dc64e;
 }
 
+.toggly-component__object-buttons__new-solid-link-button_disabled:hover {
+  background: #98b786;
+}
+
 .toggly-component__object-buttons__new-solid-link-button:active {
   background-color: #67a83e;
+}
+
+.toggly-component__object-buttons__new-solid-link-button_disabled:active {
+  background: #98b786;
 }
 
 .toggly-component__object-buttons__new-dashed-link-button {
@@ -179,12 +227,24 @@
   border-top-right-radius: 5px;
 }
 
+.toggly-component__object-buttons__new-dashed-link-button_disabled {
+  background: #98b786;
+}
+
 .toggly-component__object-buttons__new-dashed-link-button:hover {
   background-color: #7dc64e;
 }
 
+.toggly-component__object-buttons__new-dashed-link-button_disabled:hover {
+  background: #98b786;
+}
+
 .toggly-component__object-buttons__new-dashed-link-button:active {
   background-color: #67a83e;
+}
+
+.toggly-component__object-buttons__new-dashed-link-button_disabled:active {
+  background: #98b786;
 }
 
 .toggly-component__display {
