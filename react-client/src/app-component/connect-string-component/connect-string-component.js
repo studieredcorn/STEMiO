@@ -37,7 +37,7 @@ export class ConnectString extends React.Component {
     return (
       <div className="connect-string-component">
         <label className="connect-string-component__label">
-          Connect to system database: 
+          Connect to system database:
           <div className="connect-string-component__connect-string">
             <input type="text" className="connect-string-component__connect-string__input"
               value={this.state.connectString}
