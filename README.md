@@ -55,7 +55,7 @@ the React client, and the React client will hopefully communicate
 successfully with the server. In order to have a toy database to save/load
 stemio systems from, you should type in
 
-mongodb://mlepilov:Bl11hler2@ds123331.mlab.com:23331/stemio-db
+mongodb://<dbuser>:<dbpassword>@ds123331.mlab.com:23331/stemio-db
 
 under where it says "Connect to system database". (You will want to replace
 "<dbuser>" and "<dbpassword>" in this string with the correct username and
