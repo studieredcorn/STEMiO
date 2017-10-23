@@ -289,7 +289,7 @@ export class Toggly extends React.Component {
     // view at the root of the view tree containing the view with id
     // viewId. (Programmatically, the method, when passed some view's
     // viewId, either calls itself with the view's parent id, or returns
-    // with the view's id if its parent id is null.) 
+    // with the view's id if its parent id is null.)
 
     var view = this._getCurrentView(viewId);
 
@@ -723,7 +723,7 @@ export class Toggly extends React.Component {
                   this._cullExternalBlobs(view);
                   this.props.setDisableDataActions(false);
 
-                  ReactDOM.render(<this.props.popup 
+                  ReactDOM.render(<this.props.popup
                     closeBtn={false}
                     closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
                   this.props.popup.plugins().noticeCancel("Flow has children",
@@ -734,7 +734,7 @@ export class Toggly extends React.Component {
               } else {
                 var _this = this;
 
-                ReactDOM.render(<this.props.popup 
+                ReactDOM.render(<this.props.popup
                   closeBtn={false}
                   closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
                 this.props.popup.plugins().promptLink("New Flow", "Name of the new flow", function (input) {
@@ -859,7 +859,7 @@ export class Toggly extends React.Component {
       var data = this.props.dataService.getData();
       var _this = this;
 
-      ReactDOM.render(<this.props.popup 
+      ReactDOM.render(<this.props.popup
         closeBtn={false}
         closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
       this.props.popup.plugins().promptProcess("New Process", "Name of the new process", function (input) {
@@ -884,7 +884,7 @@ export class Toggly extends React.Component {
       var data = this.props.dataService.getData();
       var _this = this;
 
-      ReactDOM.render(<this.props.popup 
+      ReactDOM.render(<this.props.popup
         closeBtn={false}
         closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
       this.props.popup.plugins().promptStock("New Stock", "Name of the new stock", function (input) {
@@ -988,7 +988,7 @@ export class Toggly extends React.Component {
 
           this._deleteLink(view, clickedObject.id);
         } else {
-          ReactDOM.render(<this.props.popup 
+          ReactDOM.render(<this.props.popup
             closeBtn={false}
             closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
           this.props.popup.plugins().noticeCancel("Flow has children",
@@ -1010,7 +1010,7 @@ export class Toggly extends React.Component {
             objectType = "process";
           }
 
-          ReactDOM.render(<this.props.popup 
+          ReactDOM.render(<this.props.popup
             closeBtn={false}
             closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
           this.props.popup.plugins().noticeOkCancel("Delete subsystem?",
@@ -1039,7 +1039,7 @@ export class Toggly extends React.Component {
       if (view.parent === null) {
         var _this = this;
 
-        ReactDOM.render(<this.props.popup 
+        ReactDOM.render(<this.props.popup
           closeBtn={false}
           closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
         this.props.popup.plugins().promptProcess("New Process", "Name the current system", function (input) {
@@ -1072,7 +1072,7 @@ export class Toggly extends React.Component {
             : (((this.state.tempSourceBlob !== null) & (this.state.tempSourceBlob !== true)) ? ("Select target") : "") }
         </div>
         <div className="toggly-component__parent-buttons">
-          <button onClick={this.handleParentView} 
+          <button onClick={this.handleParentView}
             className="toggly-component__parent-buttons__go-back-button"
             title="Go to Parent System">
             <svg id="go-back-svg"

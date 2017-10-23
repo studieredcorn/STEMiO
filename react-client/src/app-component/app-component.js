@@ -273,6 +273,8 @@ class MainPage extends React.Component {
           setClickedObjects={this.setClickedObjects}
 
           getDisableDataActions={this.getDisableDataActions}
+
+          popup={Popup}
         />
       </div>
     );
