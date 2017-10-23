@@ -161,14 +161,23 @@ export class Toggly extends React.Component {
       this.props.dataService.setData(data);
     }
 
-    if (this.props.resetViewId !== false) {
+    if (this.props.resetViewId === true) {
       this.setState({ externalBlobs: [] });
       this._setCurrentViewId();
       this._resetState();
     } else {
-      i = this.props.dataService.getData().findIndex( (function(d) {
-          return d.id === this.state.currentViewId;
-        }).bind(this) );
+      if (this.props.resetViewId === false) {
+        i = this.props.dataService.getData().findIndex( (function(d) {
+            return d.id === this.state.currentViewId;
+          }).bind(this) );
+      } else {
+        i = this.props.dataService.getData().findIndex( (function(d) {
+            return d.id === this.props.resetViewId;
+          }).bind(this) );
+        if (i >= 0) {
+          this._setCurrentViewId(this.props.resetViewId);
+        }
+      }
       data = this.props.dataService.getData();
 
       if ((i < 0) && (data[0] !== undefined)) {
@@ -687,6 +696,7 @@ export class Toggly extends React.Component {
           } else {
             this._resetState();
             this._cullExternalBlobs(view);
+            this.props.setDisableDataActions(false);
           }
         } else {
           if ((this.state.tempSourceBlob.id !== d.id) && (d.type !== "source")) {
@@ -706,10 +716,12 @@ export class Toggly extends React.Component {
 
                   this._resetState();
                   this._cullExternalBlobs(view);
+                  this.props.setDisableDataActions(false);
                   this.props.dataService.setData(data);
                 } else {
                   this._resetState();
                   this._cullExternalBlobs(view);
+                  this.props.setDisableDataActions(false);
 
                   ReactDOM.render(<this.props.popup
                     closeBtn={false}
@@ -730,16 +742,19 @@ export class Toggly extends React.Component {
                       _this.state.prospectiveLinkType);
                     _this._resetState();
                     _this._cullExternalBlobs(view);
+                    _this.props.setDisableDataActions(false);
                     _this.props.dataService.setData(data);
                   });
               }
             } else {
               this._resetState();
               this._cullExternalBlobs(view);
+              this.props.setDisableDataActions(false);
             }
           } else {
             this._resetState();
             this._cullExternalBlobs(view);
+            this.props.setDisableDataActions(false);
           }
         }
 
@@ -758,6 +773,7 @@ export class Toggly extends React.Component {
     if (view !== null) {
       this._cullExternalBlobs(view);
       this._setCurrentViewId(d.child);
+      this.props.setDisableDataActions(false);
       this._resetState();
     }
   }
@@ -804,6 +820,7 @@ export class Toggly extends React.Component {
     if (view !== null) {
       this._resetState();
       this._cullExternalBlobs(view);
+      this.props.setDisableDataActions(false);
     }
   }
 
@@ -825,6 +842,7 @@ export class Toggly extends React.Component {
       var parentview = view.parent;
 
       this._cullExternalBlobs(view);
+      this.props.setDisableDataActions(false);
       this._setCurrentViewId(parentview);
       this._resetState();
     }
@@ -895,6 +913,7 @@ export class Toggly extends React.Component {
       this.setState({ prospectiveLinkType: "solid",
         tempSourceBlob: true,
         drawExternals: true });
+      this.props.setDisableDataActions(true);
     }
   }
 
@@ -913,6 +932,7 @@ export class Toggly extends React.Component {
       this.setState({ prospectiveLinkType: "dashed",
         tempSourceBlob: true,
         drawExternals: true });
+      this.props.setDisableDataActions(true);
     }
   }
 
@@ -1037,6 +1057,7 @@ export class Toggly extends React.Component {
       }
 
       this._cullExternalBlobs(view);
+      this.props.setDisableDataActions(false);
       this._resetState();
       this.props.dataService.setData(data);
     }
@@ -1074,7 +1095,8 @@ export class Toggly extends React.Component {
         </div>
         <div className="toggly-component__object-buttons">
           <button onClick={this.handleDelete}
-            className="toggly-component__object-buttons__delete-button"
+            className={(this.props.getDisableDataActions()) ? ("toggly-component__object-buttons__delete-button toggly-component__object-buttons__delete-button_disabled") : ("toggly-component__object-buttons__delete-button")}
+            disabled={this.props.getDisableDataActions()}
             title="Delete">
             <svg id="delete-svg"
               className="toggly-component__delete-svg"
@@ -1083,7 +1105,8 @@ export class Toggly extends React.Component {
             </svg>
           </button>
           <button onClick={this.handleNewCircleBlob}
-            className="toggly-component__object-buttons__new-circle-blob-button"
+            className={(this.props.getDisableDataActions()) ? ("toggly-component__object-buttons__new-circle-blob-button toggly-component__object-buttons__new-circle-blob-button_disabled") : ("toggly-component__object-buttons__new-circle-blob-button")}
+            disabled={this.props.getDisableDataActions()}
             title="Create Process">
             <svg id="new-circle-blob-svg"
               className="toggly-component__new-circle-blob-svg"
@@ -1092,7 +1115,8 @@ export class Toggly extends React.Component {
             </svg>
           </button>
           <button onClick={this.handleNewSquareBlob}
-            className="toggly-component__object-buttons__new-square-blob-button"
+            className={(this.props.getDisableDataActions()) ? ("toggly-component__object-buttons__new-square-blob-button toggly-component__object-buttons__new-square-blob-button_disabled") : ("toggly-component__object-buttons__new-square-blob-button")}
+            disabled={this.props.getDisableDataActions()}
             title="Create Stock">
             <svg id="new-square-blob-svg"
               className="toggly-component__new-square-blob-svg"
@@ -1104,7 +1128,8 @@ export class Toggly extends React.Component {
             </svg>
           </button>
           <button onClick={this.handleNewSolidLink}
-            className="toggly-component__object-buttons__new-solid-link-button"
+            className={(this.props.getDisableDataActions()) ? ("toggly-component__object-buttons__new-solid-link-button toggly-component__object-buttons__new-solid-link-button_disabled") : ("toggly-component__object-buttons__new-solid-link-button")}
+            disabled={this.props.getDisableDataActions()}
             title="Create Physical Flow">
             <svg id="new-solid-link-svg"
               className="toggly-component__new-solid-link-svg"
@@ -1115,7 +1140,8 @@ export class Toggly extends React.Component {
             </svg>
           </button>
           <button onClick={this.handleNewDashedLink}
-            className="toggly-component__object-buttons__new-dashed-link-button"
+            className={(this.props.getDisableDataActions()) ? ("toggly-component__object-buttons__new-dashed-link-button toggly-component__object-buttons__new-dashed-link-button_disabled") : ("toggly-component__object-buttons__new-dashed-link-button")}
+            disabled={this.props.getDisableDataActions()}
             title="Create Informational Flow">
             <svg id="new-dashed-link-svg"
               className="toggly-component__new-dashed-link-svg"

@@ -2,7 +2,7 @@
   position: absolute;
   z-index: 1;
   right: 20px;
-  top: calc(2em + 76px);
+  top: calc(8em + 132px);
   width: 25%;
   height: auto;
   border: 1px solid black;
@@ -75,6 +75,9 @@
   cursor: pointer;
 }
 
+.load-save-component__get-system-button_disabled {
+}
+
 .load-save-component__save-system-button {
   position: relative;
   top: calc(1em + 2px);
@@ -91,6 +94,9 @@
   cursor: pointer;
 }
 
+.load-save-component__save-system-button_disabled {
+}
+
 .load-save-component__create-system-button {
   position: relative;
   top: calc(1em + 6px);
@@ -104,6 +110,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
+}
+
+.load-save-component__create-system-button_disabled {
 }
 
 .load-save-component__success-message {
