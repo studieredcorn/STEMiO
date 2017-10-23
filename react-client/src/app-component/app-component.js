@@ -44,7 +44,7 @@ class MainPage extends React.Component {
     this.setDisableDataActions = this.setDisableDataActions.bind(this);
     this.getDisableDataActions = this.getDisableDataActions.bind(this);
 
-    this.dataService = new DataService("localhost:49152",
+    this.dataService = new DataService("stemio.org",
       this.setData,
       this.getData);
   }
