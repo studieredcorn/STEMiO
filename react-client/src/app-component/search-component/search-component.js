@@ -17,6 +17,14 @@ export class Search extends React.Component {
     this.searchData = this.searchData.bind(this);
   }
 
+  componentWillUpdate() {
+    if (this.props.resetViewId === true) {
+      this.setState({ searchString: "" });
+      this.searchResults = [];
+      this.setState({ searchSelection: "" });
+    }
+  }
+
   handleSearchStringChange(event) {
     this.setState({ searchString: event.target.value });
 

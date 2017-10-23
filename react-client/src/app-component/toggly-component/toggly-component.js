@@ -161,7 +161,6 @@ export class Toggly extends React.Component {
       this.props.dataService.setData(data);
     }
 
-    console.log(this.props.resetViewId);
     if (this.props.resetViewId === true) {
       this.setState({ externalBlobs: [] });
       this._setCurrentViewId();

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import ReactDOM from 'react-dom'
+
 import './load-save-component.css'
 
 export class LoadSave extends React.Component {
@@ -80,21 +82,28 @@ export class LoadSave extends React.Component {
 
     var _this = this;
 
-    this.props.dataService.sendGetData(this.props.dataService.collectionName)
-      .then(function(results){
-          _this.props.setClickedObjects([]);
-          _this.props.dataService.setData(results);
-          _this.setState({ successText: "Retrieved " + results.length + " systems from collection '" + _this.props.dataService.collectionName + "'." });
-          _this.setState({ errorText: "" });
-          _this.setState({ recentCollection: _this.props.dataService.collectionName });
-          _this.props.setResetViewId();
-        },
-        function(error) {
-          _this.props.dataService.setData([]);
-          _this.setState({ successText: "" });
-          _this.setState({ errorText: error });
-          _this.setState({ recentCollection: "" });
-        });
+    ReactDOM.render(<this.props.popup
+      closeBtn={false}
+      closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
+    this.props.popup.plugins().noticeOkCancel("Are you sure?",
+      "Retrieving a system will cause you to lose any unsaved changes.",
+      "Continue",
+      function() {
+        _this.props.dataService.sendGetData(_this.props.dataService.collectionName)
+          .then(function(results) {
+              _this.props.setClickedObjects([]);
+              _this.props.dataService.setData(results);
+              _this.setState({ successText: "Retrieved " + results.length + " systems from collection '" + _this.props.dataService.collectionName + "'." });
+              _this.setState({ errorText: "" });
+              _this.setState({ recentCollection: _this.props.dataService.collectionName });
+              _this.props.setResetViewId();
+            }, function(error) {
+              _this.props.dataService.setData([]);
+              _this.setState({ successText: "" });
+              _this.setState({ errorText: error });
+              _this.setState({ recentCollection: "" });
+            });
+      });
   }
 
   handleSendData() {
@@ -104,16 +113,52 @@ export class LoadSave extends React.Component {
 
     var _this = this;
 
-    this.props.dataService.sendSendData(this.props.dataService.collectionName, this.props.dataService.getData(true))
-      .then(function(results) {
-          _this.setState({ successText: "Saved " + results.insertedCount + " systems to collection '" + _this.props.dataService.collectionName + "'." });
-          _this.setState({ errorText: "" });
-          _this.setState({ recentCollection: _this.props.dataService.collectionName });
-        }, function(error) {
-          _this.setState({ successText: "" });
-          _this.setState({ errorText: error });
-        });
-    
+    // Disabling data actions to account for slight lag in checking which collections exist
+    // (i.e. we make sure that the user cannot do anything silly in the meantime).
+    this.props.setDisableDataActions(true);
+
+    this.props.dataService.sendGetExistingCollections()
+      .then( function(existingCollections) {
+          var existing = false;
+
+          for (var i = 0; i < existingCollections.length; i++) {
+            if (existingCollections[i] === _this.state.collectionName) {
+              existing = true;
+              break;
+            }
+          }
+          if (existing) {
+            ReactDOM.render(<_this.props.popup
+              closeBtn={false}
+              closeOnOutsideClick={false} />,
+              document.getElementById("popupContainer") );
+
+            _this.props.popup.plugins().noticeOkCancel("Warning",
+              "A system with this name already exists in the database. Saving with this name will overwrite existing data.", "Save", function() {
+                _this.props.dataService.sendSendData(_this.props.dataService.collectionName, _this.props.dataService.getData(true))
+                 .then(function(results) {
+                     _this.setState({ successText: "Saved " + results.insertedCount + " systems to collection '" + _this.props.dataService.collectionName + "'." });
+                     _this.setState({ errorText: "" });
+                     _this.setState({ recentCollection: _this.props.dataService.collectionName });
+                   }, function(error) {
+                     _this.setState({ successText: "" });
+                     _this.setState({ errorText: error });
+                   });
+              });
+            _this.props.setDisableDataActions(false);
+          } else {
+            _this.props.dataService.sendSendData(_this.props.dataService.collectionName, _this.props.dataService.getData(true))
+              .then(function(results) {
+                  _this.setState({ successText: "Saved " + results.insertedCount + " systems to collection '" + _this.props.dataService.collectionName + "'." });
+                  _this.setState({ errorText: "" });
+                  _this.setState({ recentCollection: _this.props.dataService.collectionName });
+                }, function(error) {
+                  _this.setState({ successText: "" });
+                  _this.setState({ errorText: error });
+                });
+            _this.props.setDisableDataActions(false);
+          }
+        }); 
   }
 
   handleCreateData() {
@@ -121,13 +166,24 @@ export class LoadSave extends React.Component {
     // we call our Main Page component to set a flag to tell Toggly to
     // create a new default view
 
-    this.props.setClickedObjects([]);
-    this.props.dataService.setData([]);
-    this.props.setResetViewId();
-    this.props.setCreateData();
-    this.setState({ successText: "Created 1 new system." });
-    this.setState({ errorText: "" });
-    this.setState({ recentCollection: "" });
+    var _this = this;
+
+    ReactDOM.render(<this.props.popup
+      closeBtn={false}
+      closeOnOutsideClick={false} />,
+      document.getElementById("popupContainer"));
+    this.props.popup.plugins().noticeOkCancel("Are you sure?",
+      "Creating a new system will cause you to lose any unsaved changes.",
+      "Continue",
+      function() {
+        _this.props.setClickedObjects([]);
+        _this.props.dataService.setData([]);
+        _this.props.setResetViewId();
+        _this.props.setCreateData();
+        _this.setState({ successText: "Created 1 new system." });
+        _this.setState({ errorText: "" });
+        _this.setState({ recentCollection: "" });
+      } );
   }
 
   render() {

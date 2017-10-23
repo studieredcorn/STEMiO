@@ -92,6 +92,8 @@ export class SelectionInfo extends React.Component {
     this.props.setRelink(clickedObjects[0]);
 
     this.props.setClickedObjects(clickedObjects);
+
+    this.props.setDisableDataActions(true);
   }
 
   handleNewView() {

@@ -64,6 +64,7 @@ class MainPage extends React.Component {
           setClickedObjects={this.setClickedObjects}
 
           getDisableDataActions={this.getDisableDataActions}
+          setDisableDataActions={this.setDisableDataActions}
         />
       </Draggable>;
   }
@@ -252,6 +253,7 @@ class MainPage extends React.Component {
         />
         <LoadSave
           dataService={this.dataService}
+          popup={Popup}
 
           setCreateData={this.setCreateData}
           setResetViewId={this.setResetViewId}
@@ -260,10 +262,12 @@ class MainPage extends React.Component {
           setClickedObjects={this.setClickedObjects}
 
           getDisableDataActions={this.getDisableDataActions}
+          setDisableDataActions={this.setDisableDataActions}
         />
         <Search
           dataService={this.dataService}
 
+          resetViewId={this.state.resetViewId}
           setResetViewId={this.setResetViewId}
 
           setClickedObjects={this.setClickedObjects}
