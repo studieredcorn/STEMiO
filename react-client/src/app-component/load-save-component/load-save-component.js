@@ -22,6 +22,7 @@ export class LoadSave extends React.Component {
     this.handleGetData=this.handleGetData.bind(this);
     this.handleSendData=this.handleSendData.bind(this);
     this.handleCreateData=this.handleCreateData.bind(this);
+    this.handleDeleteData=this.handleDeleteData.bind(this);
   }
 
   componentWillMount() {
@@ -90,7 +91,7 @@ export class LoadSave extends React.Component {
       "Retrieving a system will cause you to lose any unsaved changes.",
       "Continue",
       function() {
-        _this.props.dataService.sendGetData(_this.props.dataService.collectionName)
+        _this.props.dataService.sendGetData()
           .then(function(results) {
               _this.props.setClickedObjects([]);
               _this.props.dataService.setData(results);
@@ -100,6 +101,33 @@ export class LoadSave extends React.Component {
               _this.props.setResetViewId();
             }, function(error) {
               _this.props.dataService.setData([]);
+              _this.setState({ successText: "" });
+              _this.setState({ errorText: error });
+              _this.setState({ recentCollection: "" });
+            });
+      });
+  }
+
+  handleDeleteData() {
+    // This method handles whenever a user presses the "Delete data" button:
+    // we ask dataService to send a POST request to the server to delete a
+    // system with the given name
+
+    var _this = this;
+
+    ReactDOM.render(<this.props.popup
+      closeBtn={false}
+      closeOnOutsideClick={false} />, document.getElementById("popupContainer") );
+    this.props.popup.plugins().noticeOkCancel("Are you sure?",
+      "Deleting a system is permanent and cannot be undone.",
+      "Continue",
+      function() {
+        _this.props.dataService.sendDeleteData()
+          .then(function(results) {
+              _this.setState({ successText: "Deleted the collection '" + _this.props.dataService.collectionName + "'." });
+              _this.setState({ errorText: "" });
+              _this.setState({ recentCollection: _this.props.dataService.collectionName });
+            }, function(error) {
               _this.setState({ successText: "" });
               _this.setState({ errorText: error });
               _this.setState({ recentCollection: "" });
@@ -136,7 +164,7 @@ export class LoadSave extends React.Component {
 
             _this.props.popup.plugins().noticeOkCancel("Warning",
               "A system with this name already exists in the database. Saving with this name will overwrite existing data.", "Save", function() {
-                _this.props.dataService.sendSendData(_this.props.dataService.collectionName, _this.props.dataService.getData(true))
+                _this.props.dataService.sendSendData()
                  .then(function(results) {
                      _this.setState({ successText: "Saved " + results.insertedCount + " systems to collection '" + _this.props.dataService.collectionName + "'." });
                      _this.setState({ errorText: "" });
@@ -148,7 +176,7 @@ export class LoadSave extends React.Component {
               });
             _this.props.setDisableDataActions(false);
           } else {
-            _this.props.dataService.sendSendData(_this.props.dataService.collectionName, _this.props.dataService.getData(true))
+            _this.props.dataService.sendSendData()
               .then(function(results) {
                   _this.setState({ successText: "Saved " + results.insertedCount + " systems to collection '" + _this.props.dataService.collectionName + "'." });
                   _this.setState({ errorText: "" });
@@ -218,6 +246,11 @@ export class LoadSave extends React.Component {
           className={(this.props.getDisableDataActions()) ? ("load-save-component__create-system-button load-save-component__create-system-button_disabled") : ("load-save-component__create-system-button")}
           disabled={this.props.getDisableDataActions()}>
           Create System
+        </button>
+        <button onClick={this.handleDeleteData}
+          className={(this.props.getDisableDataActions()) ? ("load-save-component__delete-system-button load-save-component__delete-system-button_disabled") : ("load-save-component__delete-system-button")}
+          disabled={this.props.getDisableDataActions()}>
+          Delete System
         </button>
         <div className="load-save-component__success-message">
           {(this.state.successText) ? this.state.successText : ""}
