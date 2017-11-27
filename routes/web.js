@@ -57,6 +57,30 @@ router.post('/getData', function(req, res, next) {
         });
   });
 
+router.post('/deleteData', function(req, res, next) {
+  var database = new DB;
+
+  database.connect(req.body.connectString).then(function() {
+      return database.deleteData(req.body.collectionName);
+    })
+    .then(function(result) {
+        return {
+          "success": true,
+          "result": result,
+          "error": "" };
+      },
+      function(error) {
+        console.log("Failed to delete data: " + error);
+        return {
+          "success": false,
+          "result": null,
+          "error": "Failed to delete data: " + error };
+      })
+    .then(function(resultObject) {
+        database.close();
+        res.json(resultObject);
+      });
+  });
 
 router.post('/sendData', function(req, res, next) {
   var database = new DB;

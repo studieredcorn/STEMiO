@@ -115,6 +115,24 @@
 .load-save-component__create-system-button_disabled {
 }
 
+.load-save-component__delete-system-button {
+  position: relative;
+  top: calc(1em + 6px);
+  left: calc(16% + 3px);
+  width: calc(67% - 3px);
+  padding: 0px 0px 0px 0px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.load-save-component__delete-system-button_disabled {
+}
+
 .load-save-component__success-message {
   position: relative;
   display: inline-block;

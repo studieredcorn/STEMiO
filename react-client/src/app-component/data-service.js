@@ -130,6 +130,48 @@ export class DataService {
       });
   }
 
+  sendDeleteData() {
+    var _this = this;
+
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('POST', "http://" + _this.defaultURL + "/web/deleteData", true);
+        xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify({ connectString: _this.connectString,
+          collectionName: _this.collectionName }));
+        xhr.addEventListener("readystatechange", processRequest, false);
+        xhr.onreadystatechange = processRequest;
+        xhr.onerror = processError;
+        xhr.onabort = processError;
+
+        function processRequest(error) {
+          var errorText = null;
+
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              var response = JSON.parse(xhr.responseText);
+              if (response.success) {
+                return resolve(response.result);
+              } else {
+                errorText = "sendDeleteData failed: " + response.error;
+              }
+            } else {
+              errorText = "HTTP error: " + xhr.statusText;
+            }
+          }
+
+          if (errorText) {
+            reject(errorText);
+          }
+        }
+
+        function processError(error) {
+          reject("Network error: " + error.target.status);
+        }
+      });
+  }
+
   sendSendData() {
     var _this = this;
 

@@ -55,7 +55,7 @@ DB.prototype.getData = function(collectionName) {
   return new Promise(function(resolve, reject) {
       _this.db.collection(collectionName, {strict:true}, function(error, collection) {
           if (collectionName === "system.indexes") {
-            var message = "DB.getData failed: cannot fetch data from system.indexes"
+            var message = "DB.getData failed: cannot fetch data from system.indexes";
             console.log(message);
             reject(message);
           } else if (error) {
@@ -72,6 +72,27 @@ DB.prototype.getData = function(collectionName) {
               });
           }
         });
+    });
+}
+
+DB.prototype.deleteData = function(collectionName) {
+  var _this = this;
+
+  return new Promise(function(resolve, reject) {
+      if (collectionName === "system.indexes") {
+        var message = "DB.deleteData failed: cannot delete system.indexes";
+        console.log(message);
+        reject(message);
+      } else {
+        _this.db.dropCollection(collectionName, function(error, result) {
+            if (error) {
+              console.log("DB.deleteData failed: " + error.message);
+              reject(error.message);
+            } else {
+              resolve(result);
+            }
+          });
+      }
     });
 }
 
