@@ -331,32 +331,28 @@
 }
 
 .toggly-component__display__d3-display__svg-window__d3-heading-texts__d3-heading {
-  font-family: "Calibri";
-  font-size: 22px;
+  font: 1.3rem "Open Sans", sans-serif;
   text-anchor: start;
   fill: black;
   pointer-events: none;
 }
 
 .toggly-component__display__d3-display__svg-window__d3-blob-texts__d3-source-text {
-  font-family: "Calibri";
-  font-size: 12px;
+  font: .6rem "Open Sans", sans-serif;
   text-anchor: middle;
   fill: black;
   pointer-events: none;
 }
 
 .toggly-component__display__d3-display__svg-window__d3-blob-texts__d3-sink-text {
-  font-family: "Calibri";
-  font-size: 12px;
+  font: .6rem "Open Sans", sans-serif;
   text-anchor: middle;
   fill: black;
   pointer-events: none;
 }
 
 .toggly-component__display__d3-display__svg-window__d3-blob-texts__d3-blob-text {
-  font-family: "Calibri";
-  font-size: 12px;
+  font: .6rem "Open Sans", sans-serif;
   text-anchor: middle;
   fill: black;
   pointer-events: none;
@@ -368,8 +364,7 @@
 }
 
 .toggly-component__display__d3-display__svg-window__d3-link-texts__d3-link-text {
-  font-family: "Calibri";
-  font-size: 12px;
+  font: italic .55rem "Open Sans", sans-serif;
   text-anchor: middle;
   fill: black;
   pointer-events: none;
