@@ -135,7 +135,8 @@ function togglyDrawSVG() {
     .attr("refY", 1.75)
     .attr("orient", "auto")
     .append("polygon")
-      .attr("points", "0 0, 5 1.75, 0 3.5");
+    .attr("points", "0 0, 5 1.75, 0 3.5")
+    .attr("fill", "gray");
 
   // Creating an element to contain blob elements
   svg.append("g")
@@ -514,7 +515,7 @@ function togglyDrawText() {
   // property). Note that here we use the "ordinal" property to determine an
   // element's position in the array. (This was set when the object was pushed
   // in togglyParseData(), but that is ok because we never directly splice or
-  // pop the arrays.) 
+  // pop the arrays.)
 
   var d3_heading = d3.select(this.node).selectAll(".toggly-component__display__d3-display__svg-window__d3-heading-texts").selectAll(".toggly-component__display__d3-display__svg-window__d3-heading-texts__d3-heading")
     .data([this.headingText]);
@@ -729,7 +730,7 @@ function togglyDrawText() {
         }
       });
   d3_blobTexts.exit().remove();
-  
+
 };
 
 function togglyDrawExternals() {
@@ -738,7 +739,7 @@ function togglyDrawExternals() {
   // process them. Note that here we use the "ordinal" property to determine an
   // element's position in the array. (This was set when the object was pushed
   // in togglyParseData(), but that is ok because we never directly splice or
-  // pop the arrays.) 
+  // pop the arrays.)
 
 
   var sourceBlobs = [];
@@ -1002,7 +1003,7 @@ function togglyParseData(state) {
 
 function togglyUpdate(state, external) {
   // This function is invoked in one of three ways:
-  // 
+  //
   // 1. By Toggly, whenever it updates its state (state pased by Toggly,
   // external set to true). In this case, we both recalculate our local data
   // based on data passed to us in state and redraw the SVG elements.
