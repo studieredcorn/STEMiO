@@ -23,6 +23,7 @@ export class SelectionInfo extends React.Component {
     this.handleRelink = this.handleRelink.bind(this);
     this.handleNewView = this.handleNewView.bind(this);
     this.handleDeleteView = this.handleDeleteView.bind(this);
+    this.handleCopyView = this.handleCopyView.bind(this);
     this.handleToggleLinkType = this.handleToggleLinkType.bind(this);
     this.handleToggleBlobType = this.handleToggleBlobType.bind(this);
 
@@ -40,6 +41,18 @@ export class SelectionInfo extends React.Component {
     if ((clickedObjects[0].child !== null) && (clickedObjects[0].child !== undefined)) {
       this.props.setRenameView({ viewId: clickedObjects[0].child,
         newText: event.target.value });
+    }
+    else if ((clickedObjects[0].type === "solid") || (clickedObjects[0].type === "dashed")) {
+      if ((clickedObjects[0].source.child !== null) && (clickedObjects[0].source.child !== undefined)) {
+        this.props.setRenameHidden({ viewId: clickedObjects[0].source.child,
+          parentlinkId: clickedObjects[0].id,
+          newText: event.target.value });
+      }
+      else if ((clickedObjects[0].target.child !== null) && (clickedObjects[0].target.child !== undefined)) {
+        this.props.setRenameHidden({ viewId: clickedObjects[0].target.child,
+          parentlinkId: clickedObjects[0].id,
+          newText: event.target.value });
+      }
     }
 
     this.props.setClickedObjects(clickedObjects);
@@ -110,6 +123,12 @@ export class SelectionInfo extends React.Component {
     this.props.setDeleteView(clickedObjects[0]);
 
     this.props.setClickedObjects(clickedObjects);
+  }
+
+  handleCopyView() {
+    var clickedObjects = this.props.getClickedObjects();
+
+    this.props.setCopyView(clickedObjects[0]);
   }
 
   handleToggleLinkType() {
@@ -240,6 +259,11 @@ export class SelectionInfo extends React.Component {
             onClick={this.handleDeleteView}>
             Delete Subsystem
           </button>
+          <button className={(this.props.getDisableDataActions()) ? ("selection-info-component__selection-actions__copy-view-button selection-info-component__selection-actions__copy-view-button_disabled selection-info-component__cancel-draggable") : ("selection-info-component__selection-actions__copy-view-button selection-info-component__cancel-draggable")}
+            disabled={this.props.getDisableDataActions()}
+            onClick={this.handleCopyView}>
+            Copy Stock/Process
+          </button>
           <button className="selection-info-component__selection-actions__change-blob-type-button selection-info-component__cancel-draggable"
             onClick={this.handleToggleBlobType}>
             Toggle Stock/Process
@@ -251,6 +275,11 @@ export class SelectionInfo extends React.Component {
             disabled={this.props.getDisableDataActions()}
             onClick={this.handleNewView}>
             Create Subsystem
+          </button>
+          <button className={(this.props.getDisableDataActions()) ? ("selection-info-component__selection-actions__copy-view-button selection-info-component__selection-actions__copy-view-button_disabled selection-info-component__cancel-draggable") : ("selection-info-component__selection-actions__copy-view-button selection-info-component__cancel-draggable")}
+            disabled={this.props.getDisableDataActions()}
+            onClick={this.handleCopyView}>
+            Copy Stock/Process
           </button>
           <button className="selection-info-component__selection-actions__change-blob-type-button selection-info-component__cancel-draggable"
             onClick={this.handleToggleBlobType}>

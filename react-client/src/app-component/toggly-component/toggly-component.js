@@ -77,6 +77,8 @@ export class Toggly extends React.Component {
                                                                  // variable
                                                                  // currentViewId
 
+    this._deepCopyViews = this._deepCopyViews.bind(this);
+    this._deepPasteViews = this._deepPasteViews.bind(this);
     this._findFirstEmptySlot = this._findFirstEmptySlot.bind(this);              // these internal
     this._checkLinkHasChildren = this._checkLinkHasChildren.bind(this);          // functions do not
     this._getConnectingLinksToBlob = this._getConnectingLinksToBlob.bind(this);  // not manipulate the
@@ -114,6 +116,9 @@ export class Toggly extends React.Component {
     this.handleNewDashedLink = this.handleNewDashedLink.bind(this); // component
     this.handleDelete = this.handleDelete.bind(this);
     this.handleNewParent = this.handleNewParent.bind(this);
+    this.handlePaste = this.handlePaste.bind(this);
+
+    this.assemblePasteButtonClass = this.assemblePasteButtonClass.bind(this);
   }
 
   componentDidMount() {
@@ -201,6 +206,17 @@ export class Toggly extends React.Component {
           viewToRename.text = this.props.renameView[i].newText;
         }
       }
+      if (this.props.renameHidden !== false) {
+        for (i = 0; i < this.props.renameHidden.length; i++) {
+          var blobsToRename = this._getCurrentView(this.props.renameHidden[i].viewId).blobs;
+          for (var j = 0; j < blobsToRename.length; j++) {
+            if (blobsToRename[j].parentlink === this.props.renameHidden[i].parentlinkId) {
+              blobsToRename[j].text = this.props.renameHidden[i].newText;
+              break;
+            }
+          }
+        }
+      }
       if (this.props.newView !== false) {
         data = this.props.dataService.getData();
 
@@ -223,6 +239,27 @@ export class Toggly extends React.Component {
         this.props.deleteView.child = null;
 
         this.props.dataService.setData(data);
+      }
+      if (this.props.copyView !== false) {
+        data = this.props.dataService.getData();
+        var parentView = this._getCurrentView();
+
+        var copiedViewData = { topBlob: JSON.parse(JSON.stringify(this.props.copyView)),
+          topLinks: [],
+          copiedViews: this._deepCopyViews(this.props.copyView.child, null) };
+        for (i = 0; i < parentView.links.length; i++) {
+          if (parentView.links[i].source.id === this.props.copyView.id) {
+            copiedViewData.topLinks.push(JSON.parse(JSON.stringify(parentView.links[i])));
+            copiedViewData.topLinks[copiedViewData.topLinks.length - 1].source = "copiedView";
+            copiedViewData.topLinks[copiedViewData.topLinks.length - 1].target = null;
+          } else if (parentView.links[i].target.id === this.props.copyView.id) {
+            copiedViewData.topLinks.push(JSON.parse(JSON.stringify(parentView.links[i])));
+            copiedViewData.topLinks[copiedViewData.topLinks.length - 1].source = null;
+            copiedViewData.topLinks[copiedViewData.topLinks.length - 1].target = "copiedView";
+          }
+        }
+
+        this.props.setCopiedViewData(copiedViewData);
       }
     }
   }
@@ -318,6 +355,82 @@ export class Toggly extends React.Component {
         this.setState({ currentViewId: viewId });
       }
     }
+  }
+
+  _deepCopyViews(viewId, copiedViews) {
+    var result;
+    var i;
+
+    if (copiedViews !== null) {
+      result = copiedViews;
+    } else {
+      result = [];
+    }
+
+    var view = this._getCurrentView(viewId);
+    if (view !== null) {
+      result.push(JSON.parse(JSON.stringify(this._getCurrentView(view.id))));
+
+      for (i = 0; i < result[result.length - 1].links.length; i++) {
+        result[result.length - 1].links[i].source = result[result.length - 1].links[i].source.id;
+        result[result.length - 1].links[i].target = result[result.length - 1].links[i].target.id;
+      } 
+
+      for (i = 0; i < view.blobs.length; i++) {
+        result = this._deepCopyViews(view.blobs[i].child, result);
+      }
+
+      return result;
+    } else {
+      return result;
+    }
+  }
+
+  _deepPasteViews(parentView, parentBlobId, oldViewId, copiedViews) {
+    var index;
+    var i,j;
+
+    var oldViewIndex = copiedViews.findIndex( function(d) {
+        return d.id === oldViewId;
+      });
+    var parentBlobIndex = parentView.blobs.findIndex( function(d) {
+        return d.id === parentBlobId;
+      });
+
+    var newView = this._createView(copiedViews[oldViewIndex], parentView.id);
+    parentView.blobs[parentBlobIndex].child = newView.id;
+    newView.parent = parentView.id;
+    newView.blobs = JSON.parse(JSON.stringify(copiedViews[oldViewIndex].blobs));
+    newView.links = JSON.parse(JSON.stringify(copiedViews[oldViewIndex].links));
+    newView.text = copiedViews[oldViewIndex].text;
+
+    for (i = 0; i < newView.links.length; i++) {
+      index = -1;
+      for (j = 0; j < newView.blobs.length; j++) {
+        if (newView.blobs[j].id === newView.links[i].source) {
+          index = j;
+          break;
+        }
+      }
+      newView.links[i].source = newView.blobs[index];
+
+      index = -1;
+      for (j = 0; j < newView.blobs.length; j++) {
+        if (newView.blobs[j].id === newView.links[i].target) {
+          index = j;
+          break;
+        }
+      }
+      newView.links[i].target = newView.blobs[index];
+    }
+
+    for (i = 0; i < newView.blobs.length; i++) {
+      if (newView.blobs[i].child !== null) {
+        this._deepPasteViews(newView, newView.blobs[i].id, newView.blobs[i].child, copiedViews);
+      }
+    }
+
+    return newView;
   }
 
   _findFirstEmptySlot(array) {
@@ -498,6 +611,8 @@ export class Toggly extends React.Component {
       gluedlinks: null,
       parentlink: null,
       id: "b" + location });
+
+    return "b" + location;
   }
 
   _createLink(view, text, sourceBlob, targetBlob, type) {
@@ -527,6 +642,8 @@ export class Toggly extends React.Component {
     // is correctly updated (for displaying multiple links between the same
     // two nodes)
     this.d3Toggly.update(this._getState(), true);
+
+    return "l" + location;
   }
 
   _createView(text, parent) {
@@ -542,7 +659,7 @@ export class Toggly extends React.Component {
     return data[location];
   }
 
-  _convertBlobToOrphan(view, blobId) {
+  _convertBlobToOrphan(view, blobId, connectedInfo) {
     // This method is invoked whenever we delete a blob with links
     // originating from or pointing to it. It converts the blob to an
     // "orphan" blob type, which contains none of the data of the
@@ -559,6 +676,13 @@ export class Toggly extends React.Component {
       view.blobs[i].fx = view.blobs[i].x;
       view.blobs[i].fy = view.blobs[i].y;
       view.blobs[i].r = null;
+      view.blobs[i].gluedlinks = [];
+      for (var j = 0; j < connectedInfo.connectsTo.length; j++) {
+        view.blobs[i].gluedlinks.push(connectedInfo.connectsTo[j]);
+      }
+      for (j = 0; j < connectedInfo.connectsFrom.length; j++) {
+        view.blobs[i].gluedlinks.push(connectedInfo.connectsFrom[j]);
+      }
     }
   }
 
@@ -969,10 +1093,12 @@ export class Toggly extends React.Component {
               var connectedInfo = _this._getConnectingLinksToBlob(view, clickedBlob.id);
 
               if ((connectedInfo.connectsTo !== []) || (connectedInfo.connectsFrom !== [])) {
-                this._convertBlobToOrphan(view, clickedBlob.id);
+                this._convertBlobToOrphan(view, clickedBlob.id, connectedInfo)
+              }
+              else {
+                this._deleteBlob(view, clickedBlob.id);
               }
 
-              this._deleteBlob(view, clickedBlob.id);
               this.props.dataService.setData(data);
             }).bind(this);
         }).bind(this);
@@ -1063,6 +1189,84 @@ export class Toggly extends React.Component {
     }
   }
 
+  handlePaste() {
+    var view = this._getCurrentView();
+
+    if (view !== null) {
+      var copiedViewData = this.props.getCopiedViewData();
+      if (copiedViewData !== null) {
+        var data = this.props.dataService.getData();
+        var i,j;
+
+        var newTopBlobId = this._createBlob(view, copiedViewData.topBlob.text,
+          copiedViewData.topBlob.type, null);
+        var newTopBlobIndex = view.blobs.findIndex(function(d) {
+            return d.id === newTopBlobId;
+          });
+        var tempTopBlobId;
+        var tempTopBlobIndex = -1;
+        for (i = 0; i < copiedViewData.topLinks.length; i++) {
+          tempTopBlobId = this._createBlob(view, copiedViewData.topLinks[i].text, "circle", null);
+          for (j = 0; j < view.blobs.length; j++) {
+            if (view.blobs[j].id === tempTopBlobId) {
+              tempTopBlobIndex = j;
+              break;
+            }
+          }
+
+          var connectedInfo = { connectsTo: [],
+            connectsFrom: [] };
+          if (copiedViewData.topLinks[i].source === "copiedView") {
+            copiedViewData.topLinks[i].lastInstanceId = this._createLink(view,
+              copiedViewData.topLinks[i].text, view.blobs[newTopBlobIndex],
+              view.blobs[tempTopBlobIndex], copiedViewData.topLinks[i].type);
+            connectedInfo.connectsTo.push(copiedViewData.topLinks[i].lastInstanceId);
+          }
+          else if (copiedViewData.topLinks[i].target === "copiedView") {
+            copiedViewData.topLinks[i].lastInstanceId = this._createLink(view,
+              copiedViewData.topLinks[i].text, view.blobs[tempTopBlobIndex],
+              view.blobs[newTopBlobIndex], copiedViewData.topLinks[i].type);
+            connectedInfo.connectsFrom.push(copiedViewData.topLinks[i].lastInstanceId);
+          }
+          this._convertBlobToOrphan(view, tempTopBlobId, connectedInfo);
+        }
+
+        if (copiedViewData.topBlob.child !== null) {
+          var newParentView = this._deepPasteViews(view, newTopBlobId,
+            copiedViewData.topBlob.child, copiedViewData.copiedViews);
+          view.blobs[newTopBlobIndex].child = newParentView.id;
+
+          var tempCopiedLinkIndex = -1;
+          for (i = 0; i < newParentView.blobs.length; i++) {
+            if ((newParentView.blobs[i].type === "source") || (newParentView.blobs[i].type === "sink")) {
+              for (j = 0; j < copiedViewData.topLinks.length; j++) {
+                if (copiedViewData.topLinks[j].id === newParentView.blobs[i].parentlink) {
+                  tempCopiedLinkIndex = j;
+                  break;
+                }
+              }
+              newParentView.blobs[i].parentlink = copiedViewData.topLinks[tempCopiedLinkIndex].lastInstanceId;
+            }
+          }
+        }
+
+        this.props.dataService.setData(data);
+      }
+    }
+  }
+
+  assemblePasteButtonClass(disableDataActions, copiedData) {
+    var className = "toggly-component__display__paste-button";
+
+    if (disableDataActions === true) {
+      className = className + " toggly-component__display__paste-button_disabled";
+    }
+    if (copiedData === null) {
+      className = className + " toggly-component__display__paste-button_hidden";
+    }
+
+    return className;
+  }
 
   render() {
     return (
@@ -1157,6 +1361,16 @@ export class Toggly extends React.Component {
         </div>
         <div className="toggly-component__display">
           <div ref={ (d) => { this.d3Container = d }}></div>
+          <button onClick={this.handlePaste}
+            className={this.assemblePasteButtonClass(this.props.getDisableDataActions(), this.props.getCopiedViewData())}
+            disabled={this.props.getDisableDataActions()}
+            title="Paste">
+            <svg id="paste-svg"
+              className="toggly-component__paste-svg"
+              viewBox="0 0 500 250">
+              <path stroke="#ffffff" id="paste-svg-1" d="M336,64h-64V32c0-17.6-14.4-32-32-32h-64c-17.602,0-32,14.4-32,32v32H80v64h256V64z M240,64h-64V32.057   c0.017-0.019,0.036-0.039,0.057-0.057h63.884c0.021,0.018,0.041,0.038,0.059,0.057V64z M400,160V80c0-8.8-7.199-16-16-16h-32v32h16   v64H176v224H48V96h16V64H32c-8.801,0-16,7.2-16,16v320c0,8.8,7.199,16,16,16h144v96h224l96-96V160H400z M400,466.745V416h50.744   L400,466.745z M464,384h-96v96H208V192h256V384z" fill="#ffffff"/>
+            </svg>
+          </button>
           {this.props.selectionInfoComponent}
         </div>
       </div>

@@ -18,13 +18,16 @@ class MainPage extends React.Component {
 
     this.state = { data: [],
       clickedObjects: [],
+      copiedViewData: null,
 
       resetViewId: false,
       createData: false,
       relink: false,
       newView: false,
       deleteView: false,
+      copyView: false,
       renameView: false,
+      renameHidden: false,
       disableDataActions: false };
 
     this.selectionInfoComponent = "";
@@ -33,13 +36,17 @@ class MainPage extends React.Component {
     this.getData = this.getData.bind(this);
     this.setClickedObjects = this.setClickedObjects.bind(this);
     this.getClickedObjects = this.getClickedObjects.bind(this);
+    this.setCopiedViewData = this.setCopiedViewData.bind(this);
+    this.getCopiedViewData = this.getCopiedViewData.bind(this);
 
     this.setResetViewId = this.setResetViewId.bind(this);
     this.setCreateData = this.setCreateData.bind(this);
     this.setRelink = this.setRelink.bind(this);
     this.setNewView = this.setNewView.bind(this);
     this.setDeleteView = this.setDeleteView.bind(this);
+    this.setCopyView = this.setCopyView.bind(this);
     this.setRenameView = this.setRenameView.bind(this);
+    this.setRenameHidden = this.setRenameHidden.bind(this);
 
     this.setDisableDataActions = this.setDisableDataActions.bind(this);
     this.getDisableDataActions = this.getDisableDataActions.bind(this);
@@ -58,7 +65,9 @@ class MainPage extends React.Component {
           setRelink={this.setRelink}
           setNewView={this.setNewView}
           setDeleteView={this.setDeleteView}
+          setCopyView={this.setCopyView}
           setRenameView={this.setRenameView}
+          setRenameHidden={this.setRenameHidden}
 
           getClickedObjects={this.getClickedObjects}
           setClickedObjects={this.setClickedObjects}
@@ -73,6 +82,9 @@ class MainPage extends React.Component {
     if (this.state.renameView !== false) {
       this.setState({ renameView: false });
     }
+    if (this.state.renameHidden !== false) {
+      this.setState({ renameHidden: false });
+    }
     if (this.state.relink !== false) {
       this.setState({ relink: false });
     }
@@ -81,6 +93,9 @@ class MainPage extends React.Component {
     }
     if (this.state.deleteView !== false) {
       this.setState({ deleteView: false });
+    }
+    if (this.state.copyView !== false) {
+      this.setState({ copyView: false });
     }
     if (this.state.resetViewId !== false) {
       this.setState({ resetViewId: false });
@@ -169,6 +184,14 @@ class MainPage extends React.Component {
     return this.state.clickedObjects;
   }
 
+  setCopiedViewData(copiedViewData) {
+    this.setState({ copiedViewData: copiedViewData });
+  }
+
+  getCopiedViewData(copiedViewData) {
+    return this.state.copiedViewData;
+  }
+
   setResetViewId(viewId) {
     if (viewId === undefined) {
       this.setState({ resetViewId: true });
@@ -193,6 +216,10 @@ class MainPage extends React.Component {
     this.setState({ deleteView: blob });
   }
 
+  setCopyView(blob) {
+    this.setState({ copyView: blob });
+  }
+
   setRenameView(viewNamePair) {
     var newRenameView = [];
     var existing = false;
@@ -212,6 +239,28 @@ class MainPage extends React.Component {
     }
 
     this.setState({ renameView: newRenameView });
+  }
+
+  setRenameHidden(renameInfo) {
+    var newRenameHidden = [];
+    var existing = false;
+
+    if (this.state.renameHidden !== false) {
+      for (var i = 0; i < this.state.renameHidden.length; i++) {
+        if ((renameInfo.viewId === this.state.renameHidden[i].viewId) &&
+          (renameInfo.parentlinkId === this.state.renameHidden[i].parentlinkId)) {
+          newRenameHidden.push(renameInfo);
+          existing = true;
+        } else {
+          newRenameHidden.push(this.state.renameHidden[i]);
+        }
+      }
+    }
+    if (existing === false) {
+      newRenameHidden.push(renameInfo);
+    }
+
+    this.setState({ renameHidden: newRenameHidden });
   }
 
   setDisableDataActions(disableDataActions) {
@@ -238,10 +287,14 @@ class MainPage extends React.Component {
           relink={this.state.relink}
           newView={this.state.newView}
           deleteView={this.state.deleteView}
+          copyView={this.state.copyView}
           renameView={this.state.renameView}
+          renameHidden={this.state.renameHidden}
 
           getClickedObjects={this.getClickedObjects}
           setClickedObjects={this.setClickedObjects}
+          getCopiedViewData={this.getCopiedViewData}
+          setCopiedViewData={this.setCopiedViewData}
 
           getDisableDataActions={this.getDisableDataActions}
           setDisableDataActions={this.setDisableDataActions}
@@ -260,6 +313,8 @@ class MainPage extends React.Component {
 
           getClickedObjects={this.getClickedObjects}
           setClickedObjects={this.setClickedObjects}
+          getCopiedViewData={this.getCopiedViewData}
+          setCopiedViewData={this.setCopiedViewData}
 
           getDisableDataActions={this.getDisableDataActions}
           setDisableDataActions={this.setDisableDataActions}

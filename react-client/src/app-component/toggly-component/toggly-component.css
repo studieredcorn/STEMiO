@@ -257,6 +257,51 @@
   vertical-align: top;
 }
 
+.toggly-component__display__paste-button {
+  display: inline-block;
+  position: absolute;
+  right: 0px;
+  width: 30px;
+  height: 30px;
+  z-index: 1;
+  padding: 2px 3px 3px 3px;
+  background: #feac2f;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+.toggly-component__display__paste-button_disabled {
+  background: #efbf77;
+}
+
+.toggly-component__display__paste-button_hidden {
+  display: none;
+}
+
+.toggly-component__display__paste-button:hover {
+  background-color: #feb443;
+}
+
+.toggly-component__display__paste-button_disabled:hover {
+  background: #efbf77;
+}
+
+.toggly-component__display__paste-button_hidden:hover {
+  display: none;
+}
+
+.toggly-component__display__paste-button:active {
+  background-color: #eb8e00;
+}
+
+.toggly-component__display__paste-button_disabled:active {
+  background: #efbf77;
+}
+
+.toggly-component__display__paste-button_hidden:active {
+  display: none;
+}
+
 .toggly-component__display__d3-display {
   display: inline-block;
   position: absolute;

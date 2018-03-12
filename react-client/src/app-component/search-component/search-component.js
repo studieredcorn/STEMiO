@@ -69,7 +69,7 @@ export class Search extends React.Component {
 
     for (i = 0; i < data.length; i++) {
       for (j = 0; j < data[i].blobs.length; j++) {
-        if (data[i].blobs[j].text.indexOf(searchString) !== -1) {
+        if (data[i].blobs[j].text.toLowerCase().indexOf(searchString.toLowerCase()) !== -1) {
           if ((data[i].blobs[j].type !== "source") && (data[i].blobs[j].type !== "sink")) {
             searchResults.push({ viewId: data[i].id,
               object: data[i].blobs[j] });
@@ -77,7 +77,7 @@ export class Search extends React.Component {
         }
       }
       for (j = 0; j < data[i].links.length; j++) {
-        if (data[i].links[j].text.indexOf(searchString) !== -1) {
+        if (data[i].links[j].text.toLowerCase().indexOf(searchString.toLowerCase()) !== -1) {
           searchResults.push({ viewId: data[i].id,
             object: data[i].links[j] });
         }

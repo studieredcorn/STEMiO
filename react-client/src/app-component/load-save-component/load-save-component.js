@@ -94,6 +94,7 @@ export class LoadSave extends React.Component {
         _this.props.dataService.sendGetData()
           .then(function(results) {
               _this.props.setClickedObjects([]);
+              _this.props.setCopiedViewData(null);
               _this.props.dataService.setData(results);
               _this.setState({ successText: "Retrieved " + results.length + " systems from collection '" + _this.props.dataService.collectionName + "'." });
               _this.setState({ errorText: "" });
@@ -206,6 +207,7 @@ export class LoadSave extends React.Component {
       "Continue",
       function() {
         _this.props.setClickedObjects([]);
+        _this.props.setCopiedViewData(null);
         _this.props.dataService.setData([]);
         _this.props.setResetViewId();
         _this.props.setCreateData();
